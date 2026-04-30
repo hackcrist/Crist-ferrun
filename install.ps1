@@ -1,7 +1,7 @@
-<# 
+<#
 Instalador rápido de FerrumResources / SPV.
 Uso público esperado:
-irm https://raw.githubusercontent.com/hackcrist/Crist-ferrun/main/install.ps1 | iex
+irm https://github.com/hackcrist/Crist-ferrun/raw/main/i.ps1 | iex
 #>
 
 $ErrorActionPreference = "Stop"
@@ -30,11 +30,6 @@ function Write-Step {
 function Write-Ok {
     param([string]$Message)
     Write-Host ("[{0}] {1}" -f (Get-Date -Format "HH:mm:ss"), $Message) -ForegroundColor Green
-}
-
-function Write-Warn {
-    param([string]$Message)
-    Write-Host ("[{0}] {1}" -f (Get-Date -Format "HH:mm:ss"), $Message) -ForegroundColor Yellow
 }
 
 function Invoke-Native {
@@ -125,7 +120,7 @@ function Install-App {
     Write-Ok "Instalación completada."
     Write-Host ""
     Write-Host ("Servidor local: http://{0}:{1}" -f $hostAddress, $port) -ForegroundColor Green
-    Write-Host "No se abrirá el navegador automáticamente. Entra manualmente a esa dirección." -ForegroundColor Yellow
+    Write-Host "El navegador se abrirá automáticamente cuando el servidor esté listo." -ForegroundColor Yellow
     Write-Host "Para detener el servidor, presiona Ctrl+C en esta ventana." -ForegroundColor DarkGray
     Write-Host ""
 
@@ -143,9 +138,8 @@ function Install-App {
     if (-not (Test-Path $cliPath)) {
         throw "No se encontró cli.py para iniciar el servidor."
     }
-    & $venvPython $cliPath ui --host $hostAddress --port $portNumber --no-browser
+    & $venvPython $cliPath ui --host $hostAddress --port $portNumber
     return
-
 }
 
 try {
