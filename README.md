@@ -1,23 +1,21 @@
 # FerrumResources
 
-Instalación rápida en PowerShell:
+FerrumResources es una herramienta local para revisar y administrar el estado de una PC desde un panel web. Permite ver procesos, rendimiento, disco, red, puertos, programas, controladores, reportes, limpieza del sistema y utilidades de seguridad.
+
+La aplicación se instala en un entorno aislado dentro de `%LocalAppData%\FerrumResources`. Después de instalar, se abre desde el navegador en `http://127.0.0.1:5057`.
+
+## Instalar
 
 ```powershell
-irm https://github.com/hackcrist/Crist-ferrun/raw/main/i.ps1 | iex
+irm https://raw.githubusercontent.com/hackcrist/Crist-ferrun/main/i | iex
 ```
 
-Abrir después de instalar:
+## Abrir después de instalar
 
 ```powershell
-irm https://github.com/hackcrist/Crist-ferrun/raw/main/a.ps1 | iex
+irm https://raw.githubusercontent.com/hackcrist/Crist-ferrun/main/a | iex
 ```
 
-Comando completo:
+El comando de instalación descarga la última versión, prepara el entorno local, instala las dependencias necesarias e inicia el servidor.
 
-```powershell
-irm https://raw.githubusercontent.com/hackcrist/Crist-ferrun/main/install.ps1 | iex
-```
-
-El instalador abre una ventana independiente de PowerShell, instala la aplicación en un entorno local aislado, inicia el servidor y abre el navegador automáticamente.
-
-El comando de abrir no reinstala dependencias. Solo usa la instalación local guardada en `%LocalAppData%\FerrumResources`.
+El comando de abrir no reinstala nada. Solo usa la instalación existente y abre el navegador automáticamente.
