@@ -121,6 +121,8 @@ function Install-App {
     Write-Host ""
     Write-Host ("Servidor local: http://{0}:{1}" -f $hostAddress, $port) -ForegroundColor Green
     Write-Host "El navegador se abrirá automáticamente cuando el servidor esté listo." -ForegroundColor Yellow
+    Write-Host "Después de instalar, abre la app con:" -ForegroundColor Yellow
+    Write-Host "irm https://github.com/hackcrist/Crist-ferrun/raw/main/a.ps1 | iex" -ForegroundColor Cyan
     Write-Host "Para detener el servidor, presiona Ctrl+C en esta ventana." -ForegroundColor DarkGray
     Write-Host ""
 
