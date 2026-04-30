@@ -1,7 +1,7 @@
 <# 
 Instalador rápido de FerrumResources / SPV.
 Uso público esperado:
-irm https://raw.githubusercontent.com/GrandKenzy/FerrumResources/main/install.ps1 | iex
+irm https://raw.githubusercontent.com/hackcrist/Crist-ferrun/main/install.ps1 | iex
 #>
 
 $ErrorActionPreference = "Stop"
@@ -12,7 +12,7 @@ $runner = @'
 $ErrorActionPreference = "Stop"
 $ProgressPreference = "SilentlyContinue"
 
-$repoZipUrl = "https://codeload.github.com/GrandKenzy/FerrumResources/zip/refs/heads/main"
+$repoZipUrl = "https://codeload.github.com/hackcrist/Crist-ferrun/zip/refs/heads/main"
 $rootDir = Join-Path $env:LOCALAPPDATA "FerrumResources"
 $sourceDir = Join-Path $rootDir "source"
 $venvDir = Join-Path $rootDir "venv"
