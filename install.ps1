@@ -20,6 +20,7 @@ $downloadPath = Join-Path $env:TEMP "FerrumResources-main.zip"
 $extractRoot = Join-Path $env:TEMP ("FerrumResources-{0}" -f ([guid]::NewGuid().ToString("N")))
 $hostAddress = "127.0.0.1"
 $port = "5057"
+$portNumber = [int]$port
 
 function Write-Step {
     param([string]$Message)
@@ -34,6 +35,18 @@ function Write-Ok {
 function Write-Warn {
     param([string]$Message)
     Write-Host ("[{0}] {1}" -f (Get-Date -Format "HH:mm:ss"), $Message) -ForegroundColor Yellow
+}
+
+function Invoke-Native {
+    param(
+        [string]$FilePath,
+        [Parameter(ValueFromRemainingArguments = $true)][string[]]$Arguments
+    )
+
+    & $FilePath @Arguments
+    if ($LASTEXITCODE -ne 0) {
+        throw "El comando falló con código $LASTEXITCODE`: $FilePath $($Arguments -join ' ')"
+    }
 }
 
 function Invoke-Python {
@@ -103,11 +116,11 @@ function Install-App {
     }
 
     Write-Step "Actualizando instalador de paquetes..."
-    & $venvPython -m pip install --upgrade pip
+    Invoke-Native $venvPython -m pip install --upgrade pip
 
     Write-Step "Instalando FerrumResources / SPV..."
     $projectDir = Join-Path $sourceDir "systemchecker"
-    & $venvPython -m pip install --upgrade --force-reinstall $projectDir
+    Invoke-Native $venvPython -m pip install --upgrade --force-reinstall $projectDir
 
     Write-Ok "Instalación completada."
     Write-Host ""
@@ -120,12 +133,19 @@ function Install-App {
     $env:SPV_PORT = $port
     $env:SPV_DEBUG = "false"
 
-    Write-Step "Iniciando servidor..."
-    $spvCommand = Join-Path $venvDir "Scripts\spv.exe"
-    if (-not (Test-Path $spvCommand)) {
-        throw "No se encontró el comando instalado de SPV."
+    $portBusy = Get-NetTCPConnection -LocalAddress $hostAddress -LocalPort $portNumber -State Listen -ErrorAction SilentlyContinue
+    if ($portBusy) {
+        throw "El puerto $port ya está ocupado. Cierra el proceso que lo usa o cambia el puerto en el instalador."
     }
-    & $spvCommand ui --host $hostAddress --port ([int]$port) --no-browser
+
+    Write-Step "Iniciando servidor..."
+    $cliPath = Join-Path $projectDir "cli.py"
+    if (-not (Test-Path $cliPath)) {
+        throw "No se encontró cli.py para iniciar el servidor."
+    }
+    & $venvPython $cliPath ui --host $hostAddress --port $portNumber --no-browser
+    return
+
 }
 
 try {
