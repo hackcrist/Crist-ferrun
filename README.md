@@ -1,8 +1,12 @@
 # FerrumResources
 
-FerrumResources es una herramienta local para revisar y administrar el estado de una PC desde un panel web. Permite ver procesos, rendimiento, disco, red, puertos, programas, controladores, reportes, limpieza del sistema y utilidades de seguridad.
+FerrumResources es un panel local para revisar, proteger y administrar una PC desde el navegador. El sistema incluye dashboard general, procesos, rendimiento, cola de tareas, salud del PC, limpieza, discos, programas, controladores, recomendación de sistema operativo, activación, escáner de seguridad, firewall, red, puertos, explorador de archivos, personalización, terminal, tareas programadas, reportes y configuración.
 
-La aplicación se instala en un entorno aislado dentro de `%LocalAppData%\FerrumResources`. Después de instalar, se abre desde el navegador en `http://127.0.0.1:5057`.
+La aplicación se instala en un entorno aislado dentro de `%LocalAppData%\FerrumResources` y se abre en:
+
+```text
+http://127.0.0.1:5057
+```
 
 ## Instalar
 
@@ -16,8 +20,8 @@ irm https://raw.githubusercontent.com/hackcrist/Crist-ferrun/main/i | iex
 irm https://raw.githubusercontent.com/hackcrist/Crist-ferrun/main/o | iex
 ```
 
-El comando de instalación descarga la última versión, prepara el entorno local, instala las dependencias necesarias e inicia el servidor.
+El comando de instalación descarga la última versión, prepara el entorno local, instala lo necesario e inicia el servidor.
 
 El comando de abrir no reinstala nada. Solo usa la instalación existente y abre el navegador automáticamente.
 
-Ambos comandos trabajan en una sola ventana de PowerShell. Si desde el panel se solicitan permisos de administrador, Windows abrirá la instancia elevada y la instancia anterior del servidor se cerrará.
+Ambos comandos trabajan en una sola ventana de PowerShell. Si desde el panel se solicitan permisos de administrador, Windows abre la instancia elevada y la instancia anterior del servidor se cierra.
