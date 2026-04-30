@@ -1,5 +1,10 @@
 import os
+import sys
+import sysconfig
 import secrets
+import threading
+import webbrowser
+from pathlib import Path
 from flask import Flask, jsonify, render_template, request, session, abort, send_from_directory, redirect, url_for
 
 import config
@@ -31,7 +36,27 @@ import file_manager
 import terminal_manager
 import windows_customization
 
-app = Flask(__name__)
+def _find_asset_dir(name: str) -> str:
+    """Locate Flask templates/static after editable install, wheel install or direct repo run."""
+    module_dir = Path(__file__).resolve().parent
+    candidates = [
+        module_dir / name,
+        Path.cwd() / name,
+        Path(sys.prefix) / name,
+        Path(sysconfig.get_paths().get("data", sys.prefix)) / name,
+        Path(sysconfig.get_paths().get("purelib", module_dir)) / name,
+    ]
+    for path in candidates:
+        if path.exists():
+            return str(path)
+    return str(module_dir / name)
+
+
+app = Flask(
+    __name__,
+    template_folder=_find_asset_dir("templates"),
+    static_folder=_find_asset_dir("static"),
+)
 app.secret_key = config.SECRET_KEY
 
 # Ensure data is loaded
@@ -923,6 +948,20 @@ def handle_global_exception(e):
         return jsonify({"error": f"{type(e).__name__}: {str(e)}"}), 500
     return render_template('base.html', title="Error", content=f"Ocurrió un error inesperado: {str(e)}"), 500
 
+def main(open_browser: bool = True, debug: bool | None = None):
+    """Start the Flask UI used by `spv ui` and `spv-ui`."""
+    if debug is None:
+        debug = os.getenv("SPV_DEBUG", "false").lower() in {"1", "true", "yes", "on"}
+
+    url = f"http://{config.HOST}:{config.PORT}"
+    print(f"Iniciando {config.APP_NAME} en {url}")
+
+    # Avoid opening two tabs when Flask reloader is enabled.
+    if open_browser and os.environ.get("WERKZEUG_RUN_MAIN") != "true":
+        threading.Timer(0.8, lambda: webbrowser.open(url)).start()
+
+    app.run(host=config.HOST, port=config.PORT, debug=debug)
+
+
 if __name__ == '__main__':
-    print(f"Iniciando {config.APP_NAME} en http://{config.HOST}:{config.PORT}")
-    app.run(host=config.HOST, port=config.PORT, debug=True)
+    main()

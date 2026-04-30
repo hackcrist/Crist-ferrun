@@ -141,9 +141,29 @@ def handle_scanner(args):
             vt_res = virustotal_scanner.scan_file_vt(args.file)
             print(json.dumps(vt_res, indent=2))
 
+def handle_ui(args):
+    """Open the Flask web UI from the installed CLI."""
+    if args.host:
+        os.environ["SPV_HOST"] = args.host
+    if args.port:
+        os.environ["SPV_PORT"] = str(args.port)
+    if args.debug:
+        os.environ["SPV_DEBUG"] = "true"
+
+    import app as spv_app
+    spv_app.main(open_browser=not args.no_browser, debug=args.debug)
+
+
 def main():
     parser = argparse.ArgumentParser(description="SPV 3.1 CLI - System Management Tool")
     subparsers = parser.add_subparsers(dest="command")
+
+    # UI
+    ui_p = subparsers.add_parser("ui", help="Abrir la interfaz web Flask")
+    ui_p.add_argument("--host", type=str, help="Host para la UI. Ejemplo: 127.0.0.1")
+    ui_p.add_argument("--port", type=int, help="Puerto para la UI. Ejemplo: 5057")
+    ui_p.add_argument("--no-browser", action="store_true", help="No abrir el navegador automáticamente")
+    ui_p.add_argument("--debug", action="store_true", help="Activar debug de Flask")
 
     # Disk
     disk_p = subparsers.add_parser("disk", help="Gestión de discos")
@@ -191,7 +211,8 @@ def main():
         parser.print_help()
         return
 
-    if args.command == "disk": handle_disk(args)
+    if args.command == "ui": handle_ui(args)
+    elif args.command == "disk": handle_disk(args)
     elif args.command == "health": handle_health(args)
     elif args.command == "activation": handle_activation(args)
     elif args.command == "network": handle_network(args)

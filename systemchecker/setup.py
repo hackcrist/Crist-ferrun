@@ -1,6 +1,22 @@
 from setuptools import setup
 import glob
 import os
+from pathlib import Path
+
+
+def collect_data_files(folder):
+    """Keep Flask assets available after pip installs the wheel."""
+    root = Path(folder)
+    if not root.exists():
+        return []
+
+    groups = []
+    for directory in [root, *[p for p in root.rglob("*") if p.is_dir()]]:
+        files = [str(p) for p in directory.iterdir() if p.is_file()]
+        if files:
+            groups.append((str(directory), files))
+    return groups
+
 
 # Buscar todos los módulos de Python en la raíz (excepto setup.py)
 py_files = [os.path.splitext(f)[0] for f in glob.glob("*.py") if f != "setup.py"]
@@ -12,16 +28,21 @@ setup(
     author="Kentucky",
     py_modules=py_files,
     include_package_data=True,
+    data_files=[
+        *collect_data_files("templates"),
+        *collect_data_files("static"),
+    ],
     install_requires=[
         "Flask",
         "psutil",
-        "requests"
+        "requests",
     ],
     entry_points={
-        'console_scripts': [
-            # Esto le dice a pip que cree "spv.exe" en la carpeta Scripts de Python/venv
-            # que ejecute la función main() del archivo cli.py
-            'spv=cli:main',
+        "console_scripts": [
+            # CLI principal
+            "spv=cli:main",
+            # Acceso directo alternativo a la UI
+            "spv-ui=app:main",
         ],
     },
 )
