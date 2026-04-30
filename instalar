@@ -1,7 +1,7 @@
 <#
 Instalador rápido de FerrumResources / SPV.
 Uso público:
-irm https://raw.githubusercontent.com/hackcrist/Crist-ferrun/main/i | iex
+irm https://raw.githubusercontent.com/hackcrist/Crist-ferrun/main/instalar | iex
 #>
 
 $ErrorActionPreference = "Stop"
@@ -117,7 +117,7 @@ function Install-App {
     Write-Host ("Servidor local: http://{0}:{1}" -f $hostAddress, $port) -ForegroundColor Green
     Write-Host "El navegador se abrirá automáticamente cuando el servidor esté listo." -ForegroundColor Yellow
     Write-Host "Después de instalar, abre la app con:" -ForegroundColor Yellow
-    Write-Host "irm https://raw.githubusercontent.com/hackcrist/Crist-ferrun/main/o | iex" -ForegroundColor Cyan
+    Write-Host "irm https://raw.githubusercontent.com/hackcrist/Crist-ferrun/main/abrir | iex" -ForegroundColor Cyan
     Write-Host "Para detener el servidor, presiona Ctrl+C en esta ventana." -ForegroundColor DarkGray
     Write-Host ""
 

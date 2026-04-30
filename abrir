@@ -13,7 +13,7 @@ $url = "http://$hostAddress`:$port"
 if (-not (Test-Path $venvPython) -or -not (Test-Path $cliPath)) {
     Write-Host "FerrumResources no está instalado todavía." -ForegroundColor Yellow
     Write-Host "Instálalo primero con:" -ForegroundColor Cyan
-    Write-Host "irm https://raw.githubusercontent.com/hackcrist/Crist-ferrun/main/i | iex" -ForegroundColor Green
+    Write-Host "irm https://raw.githubusercontent.com/hackcrist/Crist-ferrun/main/instalar | iex" -ForegroundColor Green
     return
 }
 

@@ -11,13 +11,13 @@ http://127.0.0.1:5057
 ## Instalar
 
 ```powershell
-irm https://raw.githubusercontent.com/hackcrist/Crist-ferrun/main/i | iex
+irm https://raw.githubusercontent.com/hackcrist/Crist-ferrun/main/instalar | iex
 ```
 
 ## Abrir después de instalar
 
 ```powershell
-irm https://raw.githubusercontent.com/hackcrist/Crist-ferrun/main/o | iex
+irm https://raw.githubusercontent.com/hackcrist/Crist-ferrun/main/abrir | iex
 ```
 
 El comando de instalación descarga la última versión, prepara el entorno local, instala lo necesario e inicia el servidor.
