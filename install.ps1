@@ -1,14 +1,9 @@
 <#
 Instalador rápido de FerrumResources / SPV.
-Uso público esperado:
-irm https://github.com/hackcrist/Crist-ferrun/raw/main/i.ps1 | iex
+Uso público:
+irm https://raw.githubusercontent.com/hackcrist/Crist-ferrun/main/i | iex
 #>
 
-$ErrorActionPreference = "Stop"
-
-$runnerPath = Join-Path $env:TEMP ("FerrumResources-SPV-Install-{0}.ps1" -f ([guid]::NewGuid().ToString("N")))
-
-$runner = @'
 $ErrorActionPreference = "Stop"
 $ProgressPreference = "SilentlyContinue"
 
@@ -73,7 +68,7 @@ function Find-Python {
 function Install-App {
     Write-Host ""
     Write-Host "FerrumResources / SPV - instalador automático" -ForegroundColor Cyan
-    Write-Host "La ventana quedará abierta con el servidor y los registros visibles." -ForegroundColor DarkGray
+    Write-Host "El instalador usará esta misma ventana de PowerShell." -ForegroundColor DarkGray
     Write-Host ""
 
     Write-Step "Preparando carpetas locales..."
@@ -132,7 +127,9 @@ function Install-App {
 
     $portBusy = Get-NetTCPConnection -LocalAddress $hostAddress -LocalPort $portNumber -State Listen -ErrorAction SilentlyContinue
     if ($portBusy) {
-        throw "El puerto $port ya está ocupado. Cierra el proceso que lo usa o cambia el puerto en el instalador."
+        Write-Host "FerrumResources ya está abierto. Abriendo navegador..." -ForegroundColor Green
+        Start-Process ("http://{0}:{1}" -f $hostAddress, $port)
+        return
     }
 
     Write-Step "Iniciando servidor..."
@@ -141,7 +138,6 @@ function Install-App {
         throw "No se encontró cli.py para iniciar el servidor."
     }
     & $venvPython $cliPath ui --host $hostAddress --port $portNumber
-    return
 }
 
 try {
@@ -150,18 +146,4 @@ try {
     Write-Host ""
     Write-Host "La instalación falló:" -ForegroundColor Red
     Write-Host $_.Exception.Message -ForegroundColor Red
-    Write-Host ""
-    Write-Host "La ventana seguirá abierta para revisar el error." -ForegroundColor Yellow
 }
-'@
-
-Set-Content -LiteralPath $runnerPath -Value $runner -Encoding UTF8
-
-$powerShell = (Get-Command powershell.exe -ErrorAction Stop).Source
-Start-Process -FilePath $powerShell -ArgumentList @(
-    "-NoExit",
-    "-ExecutionPolicy", "Bypass",
-    "-File", $runnerPath
-) -WindowStyle Normal
-
-Write-Host "Instalador iniciado en una nueva ventana de PowerShell."

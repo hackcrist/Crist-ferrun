@@ -19,3 +19,5 @@ irm https://raw.githubusercontent.com/hackcrist/Crist-ferrun/main/a | iex
 El comando de instalación descarga la última versión, prepara el entorno local, instala las dependencias necesarias e inicia el servidor.
 
 El comando de abrir no reinstala nada. Solo usa la instalación existente y abre el navegador automáticamente.
+
+Ambos comandos trabajan en una sola ventana de PowerShell. Si desde el panel se solicitan permisos de administrador, Windows abrirá la instancia elevada y la instancia anterior del servidor se cerrará.

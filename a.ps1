@@ -24,23 +24,9 @@ if ($portBusy) {
     return
 }
 
-$runnerPath = Join-Path $env:TEMP ("FerrumResources-SPV-Open-{0}.ps1" -f ([guid]::NewGuid().ToString("N")))
-$runner = @"
-`$ErrorActionPreference = "Stop"
-`$env:SPV_HOST = "$hostAddress"
-`$env:SPV_PORT = "$port"
-`$env:SPV_DEBUG = "false"
 Write-Host "Abriendo FerrumResources / SPV en $url" -ForegroundColor Cyan
-& "$venvPython" "$cliPath" ui --host "$hostAddress" --port $portNumber
-"@
-
-Set-Content -LiteralPath $runnerPath -Value $runner -Encoding UTF8
-
-$powerShell = (Get-Command powershell.exe -ErrorAction Stop).Source
-Start-Process -FilePath $powerShell -ArgumentList @(
-    "-NoExit",
-    "-ExecutionPolicy", "Bypass",
-    "-File", $runnerPath
-) -WindowStyle Normal
-
-Write-Host "FerrumResources se está abriendo en una nueva ventana." -ForegroundColor Green
+Write-Host "Para cerrar el servidor, presiona Ctrl+C en esta ventana." -ForegroundColor DarkGray
+$env:SPV_HOST = $hostAddress
+$env:SPV_PORT = $port
+$env:SPV_DEBUG = "false"
+& $venvPython $cliPath ui --host $hostAddress --port $portNumber
