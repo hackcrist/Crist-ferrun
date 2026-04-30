@@ -13,7 +13,7 @@ irm https://raw.githubusercontent.com/hackcrist/Crist-ferrun/main/i | iex
 ## Abrir después de instalar
 
 ```powershell
-irm https://raw.githubusercontent.com/hackcrist/Crist-ferrun/main/a | iex
+irm https://raw.githubusercontent.com/hackcrist/Crist-ferrun/main/o | iex
 ```
 
 El comando de instalación descarga la última versión, prepara el entorno local, instala las dependencias necesarias e inicia el servidor.

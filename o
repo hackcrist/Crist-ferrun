@@ -1,0 +1,32 @@
+<# Abre FerrumResources / SPV después de instalar. #>
+$ErrorActionPreference = "Stop"
+
+$rootDir = Join-Path $env:LOCALAPPDATA "FerrumResources"
+$sourceDir = Join-Path $rootDir "source"
+$venvPython = Join-Path $rootDir "venv\Scripts\python.exe"
+$cliPath = Join-Path $sourceDir "systemchecker\cli.py"
+$hostAddress = "127.0.0.1"
+$port = "5057"
+$portNumber = [int]$port
+$url = "http://$hostAddress`:$port"
+
+if (-not (Test-Path $venvPython) -or -not (Test-Path $cliPath)) {
+    Write-Host "FerrumResources no está instalado todavía." -ForegroundColor Yellow
+    Write-Host "Instálalo primero con:" -ForegroundColor Cyan
+    Write-Host "irm https://raw.githubusercontent.com/hackcrist/Crist-ferrun/main/i | iex" -ForegroundColor Green
+    return
+}
+
+$portBusy = Get-NetTCPConnection -LocalAddress $hostAddress -LocalPort $portNumber -State Listen -ErrorAction SilentlyContinue
+if ($portBusy) {
+    Write-Host "FerrumResources ya está abierto. Abriendo navegador..." -ForegroundColor Green
+    Start-Process $url
+    return
+}
+
+Write-Host "Abriendo FerrumResources / SPV en $url" -ForegroundColor Cyan
+Write-Host "Para cerrar el servidor, presiona Ctrl+C en esta ventana." -ForegroundColor DarkGray
+$env:SPV_HOST = $hostAddress
+$env:SPV_PORT = $port
+$env:SPV_DEBUG = "false"
+& $venvPython $cliPath ui --host $hostAddress --port $portNumber
