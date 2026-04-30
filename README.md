@@ -1,13 +1,5 @@
 # FerrumResources
 
-FerrumResources es un panel local para revisar, proteger y administrar una PC desde el navegador. El sistema incluye dashboard general, procesos, rendimiento, cola de tareas, salud del PC, limpieza, discos, programas, controladores, recomendación de sistema operativo, activación, escáner de seguridad, firewall, red, puertos, explorador de archivos, personalización, terminal, tareas programadas, reportes y configuración.
-
-La aplicación se instala en un entorno aislado dentro de `%LocalAppData%\FerrumResources` y se abre en:
-
-```text
-http://127.0.0.1:5057
-```
-
 ## Instalar
 
 ```powershell
