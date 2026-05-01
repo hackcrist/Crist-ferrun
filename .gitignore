@@ -1,0 +1,20 @@
+# Artefactos generados
+app_package/
+desktop_publish/
+installer_output/
+portable/
+FerrumResources_Portable.zip
+
+# Compilación .NET
+desktop/bin/
+desktop/obj/
+
+# Compilación PyInstaller
+systemchecker/build/
+systemchecker/dist/
+systemchecker/*.spec
+
+# Datos locales de ejecución
+systemchecker/data/jobs.jsonl
+systemchecker/data/reports/
+systemchecker/data/quarantine/

@@ -952,6 +952,8 @@ def main(open_browser: bool = True, debug: bool | None = None):
     """Start the Flask UI used by `spv ui` and `spv-ui`."""
     if debug is None:
         debug = os.getenv("SPV_DEBUG", "false").lower() in {"1", "true", "yes", "on"}
+    if os.getenv("SPV_OPEN_BROWSER", "true").lower() in {"0", "false", "no", "off"}:
+        open_browser = False
 
     url = f"http://{config.HOST}:{config.PORT}"
     print(f"Iniciando {config.APP_NAME} en {url}")
